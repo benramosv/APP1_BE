@@ -1,21 +1,33 @@
-const client = require('../models/db.js');
+// models/invoiceModel.js
+import { client as db } from './db.js'; // Ensure 'db' is used consistently
 
-async function listInvoices() {
-    const data = await client.sql`
-        SELECT invoices.amount, customers.name
-        FROM invoices
-        JOIN customers ON invoices.customer_id = customers.id
-        WHERE invoices.amount = 555;
-    `;
-    return data.rows;
+class Invoice {
+  static async getAll() {
+    const result = await db.query('SELECT * FROM invoices');
+    return result.rows;
+  }
+
+  static async create({ customer_id, amount, due_date }) {
+    const result = await db.query(
+      'INSERT INTO invoices (customer_id, amount, due_date) VALUES ($1, $2, $3) RETURNING *',
+      [customer_id, amount, due_date]
+    );
+    return result.rows[0];
+  }
+
+  static async update(id, { customer_id, amount, status }) {
+    const result = await db.query(
+      'UPDATE invoices SET customer_id = $1, amount = $2, status = $3 WHERE id = $4 RETURNING *',
+      [customer_id, amount, status, id]
+    );
+    return result.rows[0];
+  }
+
+  static async delete(id) {
+    const result = await db.query('DELETE FROM invoices WHERE id = $1', [id]);
+    return result.rowCount; // Devuelve el número de filas afectadas
+  }
 }
 
-async function createInvoice(customerId, amount, status) {
-    const date = new Date().toISOString().split('T')[0];
-    await client.sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${customerId}, ${amount}, ${status}, ${date});
-    `;
-}
-
-module.exports = { listInvoices, createInvoice };
+// Export the Invoice class
+export default Invoice;

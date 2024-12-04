@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 // Ruta de ejemplo para obtener facturas
-app.get('/api/invoices', async (req, res) => {
+/*app.get('/api/invoices', async (req, res) => {
   try {
     const client = await db.connect();
     const data = await client.sql`SELECT * FROM invoices`;
@@ -15,10 +15,10 @@ app.get('/api/invoices', async (req, res) => {
     console.error('Error fetching invoices:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
-});
+});*/
 
 // Ruta para crear una nueva factura
-app.post('/api/invoices', async (req, res) => {
+/*app.post('/api/invoices', async (req, res) => {
   const { customer_id, amount, status, date } = req.body;
 
   // Validar los datos recibidos
@@ -40,7 +40,7 @@ app.post('/api/invoices', async (req, res) => {
     console.error('Error al crear la factura:', error);
     res.status(500).json({ error: 'Error al crear la factura.' });
   }
-});
+});*/
 
 // Iniciar el servidor
 const PORT = process.env.PORT || 5000;

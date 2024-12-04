@@ -1,11 +1,14 @@
-function authMiddleware(req, res, next) {
-    // Aquí puedes verificar el token o la sesión del usuario
-    const token = req.headers['authorization'];
-    if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
-    }
-    // Verifica el token y continúa
-    next();
-}
+import jwt from 'jsonwebtoken';
 
-module.exports = authMiddleware;
+const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.AUTH_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+export default authenticateToken;
