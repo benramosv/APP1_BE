@@ -27,6 +27,11 @@ class Invoice {
     const result = await db.query('DELETE FROM invoices WHERE id = $1', [id]);
     return result.rowCount; // Devuelve el número de filas afectadas
   }
+
+  static async getRevenue() {
+    const result = await db.query('SELECT month, revenue FROM revenue LIMIT 5');
+    return result.rows;
+  }
 }
 
 // Export the Invoice class

@@ -1,6 +1,16 @@
 // controllers/invoiceController.js
 import Invoice from '../models/invoiceModel.js'; // Ensure the model also uses ES6 exports
 
+export async function fetchRevenue(req, res) {
+  try {
+    const data = await Invoice.getRevenue(); // Ensure this method exists in the Invoice model
+    res.json(data);
+  } catch (error) {
+    console.error('Database Error:', error);
+    res.status(500).json({ error: 'Failed to fetch revenue data.' });
+  }
+}
+
 export const getInvoices = async (req, res) => {
   try {
     const invoices = await Invoice.getAll();

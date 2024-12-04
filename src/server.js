@@ -17,10 +17,13 @@ app.use(bodyParser.json());
   try {
     await connect(); // Asegúrate de que esto esté dentro de una función async o en el nivel superior de un módulo async
 
+//************ */
+app.use('/api', invoiceRoutes); // Usa las rutas de facturas
+
     // Rutas
-    app.use('/api/invoices', invoiceRoutes);
+    /*app.use('/api/invoices', invoiceRoutes);
     app.use('/api/customers', customerRoutes);
-    app.use('/api/users', userRoutes);
+    app.use('/api/users', userRoutes);*/
 
     // Manejo de errores
     app.use((err, req, res, next) => {
@@ -36,3 +39,5 @@ app.use(bodyParser.json());
     console.error('Failed to connect to the database:', error);
   }
 })();
+
+
