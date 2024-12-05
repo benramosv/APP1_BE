@@ -29,7 +29,7 @@ class Invoice {
   }
 
   static async getRevenue() {
-    const result = await db.query('SELECT month, revenue FROM revenue LIMIT 5');
+    const result = await db.query('SELECT month, revenue FROM revenue');
     return result.rows;
   }
 }
